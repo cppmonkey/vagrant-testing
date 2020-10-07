@@ -16,7 +16,7 @@ Vagrant.configure("2") do |config|
     v.memory = 8192
     v.machine_virtual_size = 20
     end
-  config.vm.provision "file", source: "~/Downloads/kea-premium-1.7.10.tar", destination: "$HOME/kea/kea-premium-1.7.10.tar"
+  config.vm.provision "file", source: "~/Downloads/kea-premium-1.7.10.tar", destination: "$HOME/kea-premium-1.7.10.tar"
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "provisioning/kea-dhcp-server.yml"
     end

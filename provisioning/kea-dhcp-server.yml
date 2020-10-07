@@ -31,5 +31,5 @@
     - name: Extract Premium hooks for Kea DHCP
       unarchive:
         remote_src: yes
-        src: ~/kea/kea-premium-1.7.10.tar
+        src: ~/kea-premium-1.7.10.tar
         dest: ~/kea/
