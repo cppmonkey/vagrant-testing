@@ -8,6 +8,7 @@
       loop:
         - git
         - vim
+        - wget
         - python3
       become: True
 
@@ -16,3 +17,12 @@
         repo: https://gitlab.isc.org/isc-projects/kea.git
         dest: ~/kea
         version: Kea-1.7.10
+
+    - name: Install component dependencies
+      shell:
+        chdir: ~/kea
+        cmd: "./hammer.py prepare-system -p local -w {{ item }}"
+      loop:
+        - mysql
+        - pgsql
+        - shell
