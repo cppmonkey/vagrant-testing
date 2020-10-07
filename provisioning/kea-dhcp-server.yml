@@ -25,4 +25,11 @@
       loop:
         - mysql
         - pgsql
+        - ccache
         - shell
+
+    - name: Extract Premium hooks for Kea DHCP
+      unarchive:
+        remote_src: yes
+        src: ~/kea/kea-premium-1.7.10.tar
+        dest: ~/kea/
