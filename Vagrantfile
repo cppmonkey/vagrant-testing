@@ -16,5 +16,8 @@ Vagrant.configure("2") do |config|
     v.memory = 8192
     v.machine_virtual_size = 20
     end
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "provisioning/kea-dhcp-server.yml"
+    end
   end
 end

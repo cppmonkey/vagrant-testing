@@ -1,0 +1,18 @@
+---
+- hosts: all
+  tasks:
+    - name: Install base requirements
+      package:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - git
+        - vim
+        - python3
+      become: True
+
+    - name: Get Kea DHCP Source
+      git:
+        repo: https://gitlab.isc.org/isc-projects/kea.git
+        dest: ~/kea
+        version: Kea-1.7.10
