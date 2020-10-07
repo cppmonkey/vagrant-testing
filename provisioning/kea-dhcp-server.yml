@@ -33,3 +33,13 @@
         remote_src: yes
         src: ~/kea-premium-1.7.10.tar
         dest: ~/kea/
+
+    - name: Autoreconf files for Kea DHCP
+      shell:
+        chdir: ~/kea
+        cmd: autoreconf -if
+
+    - name: configure make files for Kea DHCP
+      shell:
+        chdir: ~/kea
+        cmd: ./configure --with-mysql --with-pgsql --enable-shell
