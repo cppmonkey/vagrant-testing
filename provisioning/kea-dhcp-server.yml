@@ -16,7 +16,7 @@
       git:
         repo: https://gitlab.isc.org/isc-projects/kea.git
         dest: ~/kea
-        version: Kea-1.7.10
+        version: Kea-1.8.0
 
     - name: Install component dependencies
       shell:
@@ -31,7 +31,7 @@
     - name: Extract Premium hooks for Kea DHCP
       unarchive:
         remote_src: yes
-        src: ~/kea-premium-1.7.10.tar
+        src: ~/kea-premium-1.8.0.tar
         dest: ~/kea/
 
     - name: Autoreconf files for Kea DHCP
