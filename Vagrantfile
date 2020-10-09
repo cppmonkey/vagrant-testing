@@ -13,6 +13,7 @@ Vagrant.configure("2") do |config|
   config.vm.box_check_update = false
   config.vm.provider :libvirt do |v|
     v.cpus = 16
+    v.keymap = 'en-gb'
     v.memory = 8192
     v.machine_virtual_size = 20
     end
