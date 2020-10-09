@@ -43,3 +43,24 @@
       shell:
         chdir: ~/kea
         cmd: ./configure --with-mysql --with-pgsql --enable-shell
+
+    - name: kea dhcp - make
+      shell:
+        chdir: ~/kea
+        cmd: make -j16
+
+    - name: kea dhcp - make install
+      shell:
+        chdir: /home/vagrant/kea
+        cmd: make install
+      become: True
+
+    - name: kea dhcp - create ldconfig file
+      lineinefile:
+        path: /etc/ld.so.conf.d/kea.conf
+        regexp: hooks
+        line: /opt/kea/lib/hooks
+        owner: root
+        group: root
+        mode: '0444'
+      become: True
