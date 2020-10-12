@@ -51,3 +51,35 @@
         system: yes
         state: present
       become: True
+
+    - name: Install "genieacs" node.js package on version 1.2.2.
+      npm:
+        name: genieacs
+        version: '1.2.2'
+        global: yes
+        unsafe_perm: yes
+      become: True
+
+    - name: Create requires folders for GenieACS
+      file:
+        path: /opt/genieacs
+        owner: root
+        group: root
+        state: directory
+      become: True
+
+    - name: Create requires folders for GenieACS
+      file:
+        path: /opt/genieacs/ext
+        owner: genieacs
+        group: genieacs
+        state: directory
+      become: True
+
+    - name: Create log foler for GenieACS
+      file:
+        path: /var/log/genieacs
+        owner: genieacs
+        group: genieacs
+        state: directory
+      become: True
