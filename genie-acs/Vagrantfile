@@ -1,0 +1,24 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+ENV['VAGRANT_DEFAULT_PROVIDER'] = 'libvirt'
+
+
+Vagrant.configure("2") do |config|
+
+  ##### DEFINE VM #####
+  config.vm.define "debian-01" do |config|
+  config.vm.hostname = "debian-01"
+  config.vm.box = "debian/buster64"
+  config.vm.box_check_update = false
+  config.vm.provider :libvirt do |v|
+    v.cpus = 2
+    v.keymap = 'en-gb'
+    v.memory = 4096
+    v.machine_virtual_size = 20
+    end
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "provisioning/genie-acs-server.yml"
+    end
+  end
+end
