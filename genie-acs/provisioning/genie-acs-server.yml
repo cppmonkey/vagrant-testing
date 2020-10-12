@@ -1,17 +1,17 @@
 ---
 - hosts: all
   tasks:
-    - name: Add NodeJS Debian Repo
-      apt_repository:
-        filename: nodesource
-        repo: "deb https://deb.nodesource.com/node_12.x {{ ansible_distribution_release }} main"
+    - name: Add NodeJS Key
+      apt_key:
+        url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
         state: present
       when: ansible_distribution == 'Debian'
       become: True
 
-    - name: Add NodeJS Key
-      apt_key:
-        url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+    - name: Add NodeJS Debian Repo
+      apt_repository:
+        filename: nodesource
+        repo: "deb https://deb.nodesource.com/node_12.x {{ ansible_distribution_release }} main"
         state: present
       when: ansible_distribution == 'Debian'
       become: True
