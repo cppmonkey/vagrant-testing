@@ -148,6 +148,7 @@
         enabled: yes
         state: started
       loop:
+        - mongod
         - genieacs-cwmp
         - genieacs-nbi
         - genieacs-fs
