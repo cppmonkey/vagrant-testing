@@ -8,12 +8,27 @@
       when: ansible_distribution == 'Debian'
       become: True
 
+    - name: Added MongoDB Key
+      apt_key:
+        url: https://www.mongodb.org/static/pgp/server-4.4.asc
+        state: present
+      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+      become: True
+
     - name: Add NodeJS Debian Repo
       apt_repository:
         filename: nodesource
         repo: "deb https://deb.nodesource.com/node_12.x {{ ansible_distribution_release }} main"
         state: present
       when: ansible_distribution == 'Debian'
+      become: True
+
+    - name: Added MongoDB Repo - Debian
+      apt_repository:
+        repo: "deb http://repo.mongodb.org/apt/debian {{ ansible_distribution_release }}/mongodb-org/4.4 main"
+        state: present
+        filename: mongodb
+      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
       become: True
 
     - name: Install base requirements
@@ -26,4 +41,5 @@
         - wget
         - python3
         - nodejs
+        - mongodb-org
       become: True
