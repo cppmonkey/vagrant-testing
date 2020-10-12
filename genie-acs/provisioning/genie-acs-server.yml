@@ -76,6 +76,16 @@
         state: directory
       become: True
 
+    - name: Create enviroment file for GenieACs
+      template:
+        src: genieacs.env.j2
+        dest: /opt/genieacs/genieacs.env
+        owner: genieacs
+        group: genieacs
+        mode: '0600'
+      vars:
+      become: True
+
     - name: Create log foler for GenieACS
       file:
         path: /var/log/genieacs
