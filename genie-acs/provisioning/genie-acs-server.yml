@@ -43,3 +43,11 @@
         - nodejs
         - mongodb-org
       become: True
+
+    - name: Create GenieACS user
+      user:
+        name: genieacs
+        create_home: no
+        system: yes
+        state: present
+      become: True
