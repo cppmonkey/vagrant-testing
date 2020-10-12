@@ -93,3 +93,63 @@
         group: genieacs
         state: directory
       become: True
+
+    - name: Create GenieACS CWMP service
+      template:
+        src: service.j2
+        dest: /etc/systemd/system/genieacs-cwmp.service
+      vars:
+        - description: GenieACS CWMP
+        - execstart: /usr/bin/genieacs-cwmp
+        - envfile: /opt/genieacs/genieacs.env
+        - after: network.target
+        - user: genieacs
+      become: True
+
+    - name: Create GenieACS NBI service
+      template:
+        src: service.j2
+        dest: /etc/systemd/system/genieacs-nbi.service
+      vars:
+        - description: GenieACS NBI
+        - execstart: /usr/bin/genieacs-nbi
+        - envfile: /opt/genieacs/genieacs.env
+        - after: network.target
+        - user: genieacs
+      become: True
+
+    - name: Create GenieACS FS service
+      template:
+        src: service.j2
+        dest: /etc/systemd/system/genieacs-fs.service
+      vars:
+        - description: GenieACS FS
+        - execstart: /usr/bin/genieacs-fs
+        - envfile: /opt/genieacs/genieacs.env
+        - after: network.target
+        - user: genieacs
+      become: True
+
+    - name: Create GenieACS UI service
+      template:
+        src: service.j2
+        dest: /etc/systemd/system/genieacs-ui.service
+      vars:
+        - description: GenieACS UI
+        - execstart: /usr/bin/genieacs-ui
+        - envfile: /opt/genieacs/genieacs.env
+        - after: network.target
+        - user: genieacs
+      become: True
+
+    - name: Enable GenieACS services
+      service:
+        name: "{{ item }}"
+        enabled: yes
+        state: started
+      loop:
+        - genieacs-cwmp
+        - genieacs-nbi
+        - genieacs-fs
+        - genieacs-ui
+      become: True
