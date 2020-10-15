@@ -56,11 +56,12 @@
       become: True
 
     - name: kea dhcp - create ldconfig file
-      lineinefile:
+      lineinfile:
         path: /etc/ld.so.conf.d/kea.conf
         regexp: hooks
         line: /opt/kea/lib/hooks
         owner: root
         group: root
         mode: '0444'
+        create: yes
       become: True
