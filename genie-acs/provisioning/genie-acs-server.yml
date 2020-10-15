@@ -1,6 +1,14 @@
 ---
 - hosts: all
   tasks:
+    - name: Install base requirements
+      package:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - gnupg2 #required to add keys!
+      become: True
+
     - name: Add NodeJS Key
       apt_key:
         url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
