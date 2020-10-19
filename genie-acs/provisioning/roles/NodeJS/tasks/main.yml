@@ -1,0 +1,20 @@
+---
+- name: Add NodeJS Key
+  apt_key:
+    url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+    state: present
+  when: ansible_distribution == 'Debian'
+  become: True
+
+- name: Add NodeJS Debian Repo
+  apt_repository:
+    filename: nodesource
+    repo: "deb https://deb.nodesource.com/node_{{ nodejs.version }}.x {{ ansible_distribution_release }} main"
+    state: present
+  when: ansible_distribution == 'Debian'
+  become: True
+
+- name: Install base requirements
+  package:
+    name: nodejs
+    state: present

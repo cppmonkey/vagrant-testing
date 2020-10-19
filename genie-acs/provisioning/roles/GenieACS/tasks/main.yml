@@ -1,0 +1,99 @@
+---
+- name: Create GenieACS user
+  user:
+    name: genieacs
+    create_home: no
+    system: yes
+    state: present
+
+- name: "Install 'genieacs' node.js package on version {{ genieacs.version }}"
+  npm:
+    name: genieacs
+    version: "{{ genieacs.version }}"
+    global: yes
+    unsafe_perm: yes
+
+- name: Create requires folders for GenieACS
+  file:
+    path: /opt/genieacs
+    owner: root
+    group: root
+    state: directory
+
+- name: Create requires folders for GenieACS
+  file:
+    path: /opt/genieacs/ext
+    owner: "{{ genieacs.user }}"
+    group: "{{ genieacs.group }}"
+    state: directory
+
+- name: Create enviroment file for GenieACs
+  template:
+    src: genieacs.env.j2
+    dest: /opt/genieacs/genieacs.env
+    owner: "{{ genieacs.user }}"
+    group: "{{ genieacs.group }}"
+    mode: '0600'
+
+- name: Create log foler for GenieACS
+  file:
+    path: /var/log/genieacs
+    owner: "{{ genieacs.user }}"
+    group: "{{ genieacs.group }}"
+    state: directory
+
+- name: Create GenieACS CWMP service
+  template:
+    src: service.j2
+    dest: /etc/systemd/system/genieacs-cwmp.service
+  vars:
+    - description: GenieACS CWMP
+    - execstart: /usr/bin/genieacs-cwmp
+    - envfile: /opt/genieacs/genieacs.env
+    - after: network.target
+    - user: "{{ genieacs.user }}"
+
+- name: Create GenieACS NBI service
+  template:
+    src: service.j2
+    dest: /etc/systemd/system/genieacs-nbi.service
+  vars:
+    - description: GenieACS NBI
+    - execstart: /usr/bin/genieacs-nbi
+    - envfile: /opt/genieacs/genieacs.env
+    - after: network.target
+    - user: "{{ genieacs.user }}"
+
+- name: Create GenieACS FS service
+  template:
+    src: service.j2
+    dest: /etc/systemd/system/genieacs-fs.service
+  vars:
+    - description: GenieACS FS
+    - execstart: /usr/bin/genieacs-fs
+    - envfile: /opt/genieacs/genieacs.env
+    - after: network.target
+    - user: "{{ genieacs.user }}"
+
+- name: Create GenieACS UI service
+  template:
+    src: service.j2
+    dest: /etc/systemd/system/genieacs-ui.service
+  vars:
+    - description: GenieACS UI
+    - execstart: /usr/bin/genieacs-ui
+    - envfile: /opt/genieacs/genieacs.env
+    - after: network.target
+    - user: "{{ genieacs.user }}"
+
+- name: Enable GenieACS services
+  service:
+    name: "{{ item }}"
+    enabled: yes
+    state: started
+  loop:
+    - mongod
+    - genieacs-cwmp
+    - genieacs-nbi
+    - genieacs-fs
+    - genieacs-ui

@@ -1,0 +1,11 @@
+[Unit]
+Description={{ description }}
+After={{ after }}
+
+[Service]
+User={{ user }}
+EnvironmentFile={{ envfile }}
+ExecStart={{ execstart }}
+
+[Install]
+WantedBy=default.target
