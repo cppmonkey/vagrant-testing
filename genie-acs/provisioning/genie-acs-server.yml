@@ -4,6 +4,6 @@
 
   roles:
     - common
-    - MongoDB
-    - NodeJS
-    - GenieACS
+    - mongodb
+    - nodejs
+    - genieacs
