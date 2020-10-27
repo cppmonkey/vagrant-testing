@@ -1,0 +1,90 @@
+---
+- hosts: all
+  vars:
+    vagrant:
+      version: 2.2.10
+
+  tasks:
+    - name: Install base requirements
+      package:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - epel-release
+        - git
+        - vim
+        - wget
+        - python3
+      become: True
+
+    - name: Install KVM Hypervisor
+      package:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - libvirt
+        - qemu
+        - qemu-kvm
+        - virt-install
+        - virt-top
+        - libguestfs-tools
+        - bridge-utils
+      become: True
+      ignore_errors: yes
+
+    - name: Enable and start libvirtd
+      service:
+        name: libvirtd
+        enabled: yes
+        state: started
+      become: True
+
+    - name: Add vagrant user to libvirt group
+      user:
+        name: "{{ item }}"
+        append: yes
+        groups: libvirt
+      loop:
+        - vagrant
+      become: True
+
+    - name: Install Vagrant Dependencies
+      package:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - make
+        - rsync
+        - gcc
+        - zlib-devel
+        - libvirt-devel
+      become: True
+      ignore_errors: yes
+
+    - name: Install Ruby
+      package:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - ruby
+        - ruby-devel
+      become: True
+      ignore_errors: yes
+
+    - name: Download Vagrant RPM
+      get_url:
+        url: "https://releases.hashicorp.com/vagrant/{{ vagrant.version }}/vagrant_{{ vagrant.version }}_x86_64.rpm"
+        dest: /tmp/
+      become: True
+
+    - name: Install Vagrant
+      dnf:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - "/tmp/vagrant_{{ vagrant.version }}_x86_64.rpm"
+      become: True
+      ignore_errors: yes
+
+    - name: Install vagrant-libvirt
+      shell: CONFIGURE_ARGS="with-libvirt-include=/usr/include/libvirt with-libvirt-lib=/usr/lib64" vagrant plugin install vagrant-libvirt

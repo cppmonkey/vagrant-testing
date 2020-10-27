@@ -1,0 +1,25 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+ENV['VAGRANT_DEFAULT_PROVIDER'] = 'libvirt'
+
+
+Vagrant.configure("2") do |config|
+
+  ##### DEFINE VM #####
+  config.vm.define "cent-01" do |config|
+  config.vm.hostname = "cent-01"
+  # centos/8 is broken!
+  # https://github.com/vagrant-libvirt/vagrant-libvirt/issues/1127
+  config.vm.box = "centos/7"
+  config.vm.box_check_update = false
+  config.vm.provider :libvirt do |v|
+    v.cpus = 2
+    v.keymap = 'en-gb'
+    v.memory = 8192
+    end
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "provisioning/deploy-vagrant-libvirt.yml"
+    end
+  end
+end
