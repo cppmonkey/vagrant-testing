@@ -1,0 +1,26 @@
+---
+- name: enable services
+  ansible.builtin.service:
+    name: "{{ item }}"
+    enabled: yes
+  loop:
+    - libvirtd
+    - ksm
+    - ksmtuned
+
+- name: Enable libvirtd service
+  ansible.builtin.service:
+    name: libvirtd
+    state: started
+
+- name: Installed required libvirt scripting packages
+  ansible.builtin.yum:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - python-lxml
+
+- name: Disable Default Virsh Network
+  community.libvirt.virt_net:
+    state: absent
+    name: default

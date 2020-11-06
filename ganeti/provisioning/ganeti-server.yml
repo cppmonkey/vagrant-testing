@@ -5,3 +5,4 @@
   roles:
     - ganeti_repository
     - ganeti_install
+    - ganeti_config
