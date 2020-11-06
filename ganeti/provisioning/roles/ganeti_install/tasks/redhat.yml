@@ -1,4 +1,16 @@
 ---
+- name: Install Hypervisor
+  ansible.builtin.yum:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - qemu-kvm
+    - libvirt
+    - python-virtinst # CentOS 7.8.2003 can't find this, not installed on my existing cluster
+    - virt-install
+    - bridge-utils
+  ignore_errors: yes
+
 - name: Install Ganeti and tools
   ansible.builtin.yum:
     enablerepo: epel,integ-ganeti
