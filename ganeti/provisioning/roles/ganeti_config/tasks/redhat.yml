@@ -39,3 +39,16 @@
   ansible.builtin.service:
     name: systemd-modules-load
     state: started
+
+- name: enable Ganeti services
+  ansible.builtin.service:
+    name: "{{ item }}"
+    enabled: true
+  loop:
+    - ganeti
+    - ganeti-confd
+    - ganeti-noded
+    - ganeti-wconfd
+    - ganeti-rapi
+    - ganeti-luxid
+    - ganeti-kvmd
