@@ -1,2 +1,9 @@
 ---
 ## TODO
+- name: Install Network Utils
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - bridge-utils
+  ignore_errors: yes

@@ -1,4 +1,11 @@
 ---
+- name: Install Network Utils
+  ansible.builtin.yum:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - bridge-utils
+
 - name: Install Hypervisor
   ansible.builtin.yum:
     name: "{{ item }}"
