@@ -24,3 +24,18 @@
   community.libvirt.virt_net:
     state: absent
     name: default
+
+- name: Set DRBD to load
+  ansible.builtin.copy:
+    dest: /etc/modules-load.d/drbd.conf
+    content: drbd
+
+- name: Set DRBD modprobe options
+  ansible.builtin.copy:
+    dest: /etc/modprobe.d/drbd.conf
+    content: options drbd minor_count=128 usermode_helper=/bin/true
+
+- name: services load modules
+  ansible.builtin.service:
+    name: systemd-modules-load
+    state: started
