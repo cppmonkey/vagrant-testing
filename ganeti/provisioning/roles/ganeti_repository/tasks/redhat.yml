@@ -1,0 +1,25 @@
+---
+- name: Add EPEL Repository
+  ansible.builtin.yum_repository:
+    name: epel
+    description: "Extra Packages for Enterprise Linux {{ ansible_facts['distribution_major_version'] }} - x86_64"
+    baseurl: https://download.fedoraproject.org/pub/epel/$releasever/$basearch/
+    gpgkey: "https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-{{ ansible_facts['distribution_major_version'] }}"
+
+- name: Add and disable ELRepo Repository
+  ansible.builtin.yum_repository:
+    name: elrepo
+    description: "ELRepo.org Community Enterprise Linux Repository - el{{ ansible_facts['distribution_major_version'] }}"
+    baseurl: "http://elrepo.org/linux/elrepo/el{{ ansible_facts['distribution_major_version'] }}/x86_64/"
+    mirrorlist: "http://mirrors.elrepo.org/mirrors-elrepo.el{{ ansible_facts['distribution_major_version'] }}"
+    gpgkey: https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
+    enabled: no
+
+- name: Add integ-ganeti Repository
+  ansible.builtin.yum_repository:
+    name: integ-ganeti
+    description: "Integ Ganeti Packages {{ ansible_facts['distribution_major_version'] }} - x86_64"
+    baseurl: "http://jfut.integ.jp/linux/ganeti/{{ ansible_facts['distribution_major_version'] }}/x86_64"
+    gpgkey: https://jfut.integ.jp/linux/ganeti/RPM-GPG-KEY-integ-ganeti
+    enabled: no
+    state: present

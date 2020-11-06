@@ -1,0 +1,21 @@
+---
+- name: Install Ganeti and tools
+  ansible.builtin.yum:
+    enablerepo: epel,integ-ganeti
+    name: "{{ item }}"
+    state: present
+  loop:
+    - ganeti
+    - ganeti-instance-debootstrap
+    - snf-image
+  ignore_errors: yes
+
+- name: Install DRBD
+  ansible.builtin.yum:
+    enablerepo: elrepo
+    name: "{{ item }}"
+    state: present
+  loop:
+    - drbd84-utils
+    - kmod-drbd84
+  ignore_errors: yes
