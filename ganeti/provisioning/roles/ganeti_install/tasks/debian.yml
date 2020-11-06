@@ -7,3 +7,13 @@
   loop:
     - bridge-utils
   ignore_errors: yes
+
+- name: Install Ganeti and tools
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - ganeti
+    - ganeti-instance-debootstrap
+    - snf-image
+  ignore_errors: yes
