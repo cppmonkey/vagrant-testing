@@ -1,15 +1,15 @@
 ---
 - name: Create GenieACS user
   user:
-    name: genieacs
+    name: "{{ geneiacs_user }}"
     create_home: no
     system: yes
     state: present
 
-- name: "Install 'genieacs' node.js package on version {{ genieacs.version }}"
+- name: "Install 'genieacs' node.js package on version {{ genieacs_version }}"
   npm:
     name: genieacs
-    version: "{{ genieacs.version }}"
+    version: "{{ genieacs_version }}"
     global: yes
     unsafe_perm: yes
   notify: Restart GenieACS services
@@ -24,23 +24,23 @@
 - name: Create requires folders for GenieACS
   file:
     path: /opt/genieacs/ext
-    owner: "{{ genieacs.user }}"
-    group: "{{ genieacs.group }}"
+    owner: "{{ genieacs_user }}"
+    group: "{{ genieacs_group }}"
     state: directory
 
 - name: Create enviroment file for GenieACs
   template:
     src: genieacs.env.j2
     dest: /opt/genieacs/genieacs.env
-    owner: "{{ genieacs.user }}"
-    group: "{{ genieacs.group }}"
+    owner: "{{ genieacs_user }}"
+    group: "{{ genieacs_group }}"
     mode: '0600'
 
 - name: Create log foler for GenieACS
   file:
     path: /var/log/genieacs
-    owner: "{{ genieacs.user }}"
-    group: "{{ genieacs.group }}"
+    owner: "{{ genieacs_user }}"
+    group: "{{ genieacs_group }}"
     state: directory
 
 - name: Create GenieACS CWMP service
@@ -52,7 +52,7 @@
     - execstart: /usr/bin/genieacs-cwmp
     - envfile: /opt/genieacs/genieacs.env
     - after: network.target
-    - user: "{{ genieacs.user }}"
+    - user: "{{ genieacs_user }}"
   notify: Restart GenieACS services
 
 - name: Create GenieACS NBI service
@@ -64,7 +64,7 @@
     - execstart: /usr/bin/genieacs-nbi
     - envfile: /opt/genieacs/genieacs.env
     - after: network.target
-    - user: "{{ genieacs.user }}"
+    - user: "{{ genieacs_user }}"
   notify: Restart GenieACS services
 
 - name: Create GenieACS FS service
@@ -76,8 +76,8 @@
     - execstart: /usr/bin/genieacs-fs
     - envfile: /opt/genieacs/genieacs.env
     - after: network.target
-    - user: "{{ genieacs.user }}"
-  notify: Restart GenieACS services
+    - user: "{{ genieacs_user }}"
+  notify: restart genieacs-fs service
 
 - name: Create GenieACS UI service
   template:
@@ -88,5 +88,5 @@
     - execstart: /usr/bin/genieacs-ui
     - envfile: /opt/genieacs/genieacs.env
     - after: network.target
-    - user: "{{ genieacs.user }}"
   notify: Restart GenieACS services
+    - user: "{{ genieacs_user }}"

@@ -6,4 +6,6 @@
     - common
     - mongodb
     - nodejs
-    - genieacs
+    - role: genieacs
+      vars:
+        genieacs_version: 1.2.3

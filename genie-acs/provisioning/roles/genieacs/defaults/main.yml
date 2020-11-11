@@ -1,13 +1,11 @@
 ---
-genieacs:
-  version: 1.2.2
-  user: genieacs
-  group: genieacs
-  env_options:
-    GENIEACS_CWMP_ACCESS_LOG_FILE: /var/log/genieacs/genieacs-cwmp-access.log
-    GENIEACS_NBI_ACCESS_LOG_FILE: /var/log/genieacs/genieacs-nbi-access.log
-    GENIEACS_FS_ACCESS_LOG_FILE: /var/log/genieacs/genieacs-fs-access.log
-    GENIEACS_UI_ACCESS_LOG_FILE: /var/log/genieacs/genieacs-ui-access.log
-    GENIEACS_DEBUG_FILE: /var/log/genieacs/genieacs-debug.yaml
-    GENIEACS_EXT_DIR: /opt/genieacs/ext
-    GENIEACS_UI_JWT_SECRET: secret
+genieacs_version: 1.2.3
+genieacs_user: genieacs
+genieacs_group: genieacs
+genieacs_cwmp_access_log_file: /var/log/genieacs/genieacs-cwmp-access.log
+genieacs_nbi_access_log_file: /var/log/genieacs/genieacs-nbi-access.log
+genieacs_fs_access_log_file: /var/log/genieacs/genieacs-fs-access.log
+genieacs_ui_access_log_file: /var/log/genieacs/genieacs-ui-access.log
+genieacs_debug_file: /var/log/genieacs/genieacs-debug.yaml
+genieacs_ext_dir: /opt/genieacs/ext
+genieacs_ui_jwt_secret: secret
