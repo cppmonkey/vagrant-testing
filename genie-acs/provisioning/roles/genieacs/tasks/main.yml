@@ -12,7 +12,11 @@
     version: "{{ genieacs_version }}"
     global: yes
     unsafe_perm: yes
-  notify: Restart GenieACS services
+  notify:
+    - restart genieacs-cwmp service
+    - restart genieacs-nbi service
+    - restart genieacs-fs service
+    - restart genieacs-ui service
 
 - name: Create requires folders for GenieACS
   file:
@@ -35,6 +39,11 @@
     owner: "{{ genieacs_user }}"
     group: "{{ genieacs_group }}"
     mode: '0600'
+  notify:
+    - restart genieacs-cwmp service
+    - restart genieacs-nbi service
+    - restart genieacs-fs service
+    - restart genieacs-ui service
 
 - name: Create log foler for GenieACS
   file:
@@ -53,7 +62,7 @@
     - envfile: /opt/genieacs/genieacs.env
     - after: network.target
     - user: "{{ genieacs_user }}"
-  notify: Restart GenieACS services
+  notify: restart genieacs-cwmp service
 
 - name: Create GenieACS NBI service
   template:
@@ -65,7 +74,7 @@
     - envfile: /opt/genieacs/genieacs.env
     - after: network.target
     - user: "{{ genieacs_user }}"
-  notify: Restart GenieACS services
+  notify: restart genieacs-nbi service
 
 - name: Create GenieACS FS service
   template:
@@ -88,5 +97,5 @@
     - execstart: /usr/bin/genieacs-ui
     - envfile: /opt/genieacs/genieacs.env
     - after: network.target
-  notify: Restart GenieACS services
     - user: "{{ genieacs_user }}"
+  notify: restart genieacs-ui service
