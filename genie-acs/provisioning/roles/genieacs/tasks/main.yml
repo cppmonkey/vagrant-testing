@@ -12,6 +12,7 @@
     version: "{{ genieacs.version }}"
     global: yes
     unsafe_perm: yes
+  notify: Restart GenieACS services
 
 - name: Create requires folders for GenieACS
   file:
@@ -52,6 +53,7 @@
     - envfile: /opt/genieacs/genieacs.env
     - after: network.target
     - user: "{{ genieacs.user }}"
+  notify: Restart GenieACS services
 
 - name: Create GenieACS NBI service
   template:
@@ -63,6 +65,7 @@
     - envfile: /opt/genieacs/genieacs.env
     - after: network.target
     - user: "{{ genieacs.user }}"
+  notify: Restart GenieACS services
 
 - name: Create GenieACS FS service
   template:
@@ -74,6 +77,7 @@
     - envfile: /opt/genieacs/genieacs.env
     - after: network.target
     - user: "{{ genieacs.user }}"
+  notify: Restart GenieACS services
 
 - name: Create GenieACS UI service
   template:
@@ -85,15 +89,4 @@
     - envfile: /opt/genieacs/genieacs.env
     - after: network.target
     - user: "{{ genieacs.user }}"
-
-- name: Enable GenieACS services
-  service:
-    name: "{{ item }}"
-    enabled: yes
-    state: started
-  loop:
-    - mongod
-    - genieacs-cwmp
-    - genieacs-nbi
-    - genieacs-fs
-    - genieacs-ui
+  notify: Restart GenieACS services

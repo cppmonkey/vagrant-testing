@@ -1,0 +1,12 @@
+---
+- name: Restart GenieACS services
+  service:
+    name: "{{ item }}"
+    enabled: yes
+    state: restarted
+  loop:
+    - mongod
+    - genieacs-cwmp
+    - genieacs-nbi
+    - genieacs-fs
+    - genieacs-ui
