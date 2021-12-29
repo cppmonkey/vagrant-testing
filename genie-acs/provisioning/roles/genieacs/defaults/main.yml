@@ -1,5 +1,5 @@
 ---
-genieacs_version: 1.2.3
+genieacs_version: 1.2.8
 genieacs_user: genieacs
 genieacs_group: genieacs
 genieacs_cwmp_access_log_file: /var/log/genieacs/genieacs-cwmp-access.log

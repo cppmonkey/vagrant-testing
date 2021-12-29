@@ -8,4 +8,4 @@
     - nodejs
     - role: genieacs
       vars:
-        genieacs_version: 1.2.3
+        genieacs_version: 1.2.8
