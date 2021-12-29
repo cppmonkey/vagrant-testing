@@ -1,18 +1,18 @@
 ---
 - name: Added MongoDB Key
-  apt_key:
+  ansible.builtin.apt_key:
     url: "https://www.mongodb.org/static/pgp/server-{{ mongodb.version }}.asc"
     state: present
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
 - name: Added MongoDB Repo - Debian
-  apt_repository:
+  ansible.builtin.apt_repository:
     repo: "deb http://repo.mongodb.org/apt/{{ ansible_distribution | lower }} {{ ansible_distribution_release }}/mongodb-org/{{ mongodb.version }} main"
     state: present
     filename: mongodb
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
 - name: Install base requirements
-  package:
+  ansible.builtin.package:
     name: mongodb-org
     state: present

@@ -1,0 +1,4 @@
+[submodule "librenms/provisioning"]
+	path = librenms/provisioning
+	url = git@github.com:cppmonkey/ansible-scripts.git
+	branch = CentOS7-LibreNMS

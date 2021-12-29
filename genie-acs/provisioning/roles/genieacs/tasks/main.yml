@@ -1,13 +1,13 @@
 ---
 - name: Create GenieACS user
-  user:
+  ansible.builtin.user:
     name: "{{ genieacs_user }}"
     create_home: no
     system: yes
     state: present
 
 - name: "Install 'genieacs' node.js package on version {{ genieacs_version }}"
-  npm:
+  community.general.npm:
     name: genieacs
     version: "{{ genieacs_version }}"
     global: yes
@@ -19,21 +19,21 @@
     - restart genieacs-ui service
 
 - name: Create requires folders for GenieACS
-  file:
+  ansible.builtin.file:
     path: /opt/genieacs
     owner: root
     group: root
     state: directory
 
 - name: Create requires folders for GenieACS
-  file:
+  ansible.builtin.file:
     path: /opt/genieacs/ext
     owner: "{{ genieacs_user }}"
     group: "{{ genieacs_group }}"
     state: directory
 
 - name: Create enviroment file for GenieACs
-  template:
+  ansible.builtin.template:
     src: genieacs.env.j2
     dest: /opt/genieacs/genieacs.env
     owner: "{{ genieacs_user }}"
@@ -46,14 +46,14 @@
     - restart genieacs-ui service
 
 - name: Create log foler for GenieACS
-  file:
+  ansible.builtin.file:
     path: /var/log/genieacs
     owner: "{{ genieacs_user }}"
     group: "{{ genieacs_group }}"
     state: directory
 
 - name: Create GenieACS CWMP service
-  template:
+  ansible.builtin.template:
     src: service.j2
     dest: /etc/systemd/system/genieacs-cwmp.service
   vars:
@@ -65,7 +65,7 @@
   notify: restart genieacs-cwmp service
 
 - name: Create GenieACS NBI service
-  template:
+  ansible.builtin.template:
     src: service.j2
     dest: /etc/systemd/system/genieacs-nbi.service
   vars:
@@ -77,7 +77,7 @@
   notify: restart genieacs-nbi service
 
 - name: Create GenieACS FS service
-  template:
+  ansible.builtin.template:
     src: service.j2
     dest: /etc/systemd/system/genieacs-fs.service
   vars:
@@ -89,7 +89,7 @@
   notify: restart genieacs-fs service
 
 - name: Create GenieACS UI service
-  template:
+  ansible.builtin.template:
     src: service.j2
     dest: /etc/systemd/system/genieacs-ui.service
   vars:
