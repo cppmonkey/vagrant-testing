@@ -3,7 +3,7 @@
   ansible.builtin.apt_key:
     url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
     state: present
-  when: ansible_distribution == 'Debian'
+  when: ansible_facts['os_family'] == 'Debian'
   become: True
 
 - name: Add NodeJS Debian Repo
@@ -11,7 +11,7 @@
     filename: nodesource
     repo: "deb https://deb.nodesource.com/node_{{ nodejs.version }}.x {{ ansible_distribution_release }} main"
     state: present
-  when: ansible_distribution == 'Debian'
+  when: ansible_facts['os_family'] == 'Debian'
   become: True
 
 - name: Install base requirements
