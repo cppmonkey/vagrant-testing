@@ -21,9 +21,4 @@
   ansible.builtin.package:
     name: mongodb-org
     state: present
-
-- name: Enable mongodb-org service
-  ansible.builtin.service:
-    name: mongod
-    enabled: yes
-    state: started
+  notify: restart mongod service

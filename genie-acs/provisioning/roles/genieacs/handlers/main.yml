@@ -1,24 +1,24 @@
 ---
 - name: restart genieacs-cwmp service
-  service:
+  ansible.builtin.service:
     name: genieacs-cwmp
     enabled: yes
     state: restarted
 
 - name: restart genieacs-nbi service
-  service:
+  ansible.builtin.service:
     name: genieacs-nbi
     enabled: yes
     state: restarted
 
 - name: restart genieacs-fs service
-  service:
+  ansible.builtin.service:
     name: genieacs-fs
     enabled: yes
     state: restarted
 
 - name: restart genieacs-ui service
-  service:
+  ansible.builtin.service:
     name: genieacs-ui
     enabled: yes
     state: restarted
