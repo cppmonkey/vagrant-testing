@@ -14,11 +14,10 @@
     state: started
 
 - name: Installed required libvirt scripting packages
-  ansible.builtin.yum:
-    name: "{{ item }}"
+  ansible.builtin.package:
+    name:
+      - python-lxml
     state: present
-  loop:
-    - python-lxml
 
 - name: Disable Default Virsh Network
   community.libvirt.virt_net:
