@@ -1,0 +1,37 @@
+---
+- name: Install Network Utils
+  ansible.builtin.yum:
+    name:
+      - bridge-utils
+    state: present
+  loop:
+
+- name: Install Hypervisor
+  ansible.builtin.yum:
+    name:
+      - qemu-kvm
+      - libvirt
+      - python-virtinst # CentOS 7.8.2003 can't find this, not installed on my existing cluster
+      - virt-install
+      - bridge-utils
+    state: present
+  ignore_errors: yes
+
+- name: Install Ganeti and tools
+  ansible.builtin.yum:
+    enablerepo: epel,integ-ganeti
+    name:
+      - ganeti
+      - ganeti-instance-debootstrap
+      - snf-image
+    state: present
+  ignore_errors: yes
+
+- name: Install DRBD
+  ansible.builtin.yum:
+    enablerepo: elrepo
+    name:
+      - drbd84-utils
+      - kmod-drbd84
+    state: present
+  ignore_errors: yes

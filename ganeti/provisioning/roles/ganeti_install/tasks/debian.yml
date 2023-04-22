@@ -1,0 +1,17 @@
+---
+## TODO
+- name: Install Network Utils
+  ansible.builtin.package:
+    name:
+      - bridge-utils
+    state: present
+  ignore_errors: yes
+
+- name: Install Ganeti and tools
+  ansible.builtin.package:
+    name:
+      - ganeti
+      - ganeti-instance-debootstrap
+      - snf-image
+    state: present
+  ignore_errors: yes

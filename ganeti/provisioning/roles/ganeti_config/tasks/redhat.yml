@@ -1,0 +1,53 @@
+---
+- name: enable services
+  ansible.builtin.service:
+    name: "{{ item }}"
+    enabled: yes
+  loop:
+    - libvirtd
+    - ksm
+    - ksmtuned
+
+- name: Enable libvirtd service
+  ansible.builtin.service:
+    name: libvirtd
+    state: started
+
+- name: Installed required libvirt scripting packages
+  ansible.builtin.package:
+    name:
+      - python-lxml
+    state: present
+
+- name: Disable Default Virsh Network
+  community.libvirt.virt_net:
+    state: absent
+    name: default
+
+- name: Set DRBD to load
+  ansible.builtin.copy:
+    dest: /etc/modules-load.d/drbd.conf
+    content: drbd
+
+- name: Set DRBD modprobe options
+  ansible.builtin.copy:
+    dest: /etc/modprobe.d/drbd.conf
+    content: options drbd minor_count=128 usermode_helper=/bin/true
+
+- name: services load modules
+  ansible.builtin.service:
+    name: systemd-modules-load
+    state: started
+
+- name: enable Ganeti services
+  ansible.builtin.service:
+    name: "{{ item }}"
+    enabled: true
+  loop:
+    - ganeti
+    - ganeti-confd
+    - ganeti-noded
+    - ganeti-wconfd
+    - ganeti-rapi
+    - ganeti-luxid
+    - ganeti-kvmd
