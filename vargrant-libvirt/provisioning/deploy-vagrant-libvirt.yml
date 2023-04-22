@@ -6,7 +6,7 @@
 
   tasks:
     - name: Install base requirements
-      package:
+      ansible.builtin.package:
         name: "{{ item }}"
         state: present
       loop:
@@ -18,7 +18,7 @@
       become: True
 
     - name: Install KVM Hypervisor
-      package:
+      ansible.builtin.package:
         name: "{{ item }}"
         state: present
       loop:
@@ -33,14 +33,14 @@
       ignore_errors: yes
 
     - name: Enable and start libvirtd
-      service:
+      ansible.builtin.service:
         name: libvirtd
         enabled: yes
         state: started
       become: True
 
     - name: Add vagrant user to libvirt group
-      user:
+      ansible.builtin.user:
         name: "{{ item }}"
         append: yes
         groups: libvirt
@@ -49,7 +49,7 @@
       become: True
 
     - name: Install Vagrant Dependencies
-      package:
+      ansible.builtin.package:
         name: "{{ item }}"
         state: present
       loop:
@@ -62,7 +62,8 @@
       ignore_errors: yes
 
     - name: Install Ruby
-      package:
+      ansible.builtin.package:
+        name:
         name: "{{ item }}"
         state: present
       loop:
@@ -72,13 +73,13 @@
       ignore_errors: yes
 
     - name: Download Vagrant RPM
-      get_url:
+      ansible.builtin.get_url:
         url: "https://releases.hashicorp.com/vagrant/{{ vagrant.version }}/vagrant_{{ vagrant.version }}_x86_64.rpm"
         dest: /tmp/
       become: True
 
     - name: Install Vagrant
-      dnf:
+      ansible.builtin.dnf:
         name: "{{ item }}"
         state: present
       loop:
@@ -87,4 +88,4 @@
       ignore_errors: yes
 
     - name: Install vagrant-libvirt
-      shell: CONFIGURE_ARGS="with-libvirt-include=/usr/include/libvirt with-libvirt-lib=/usr/lib64" vagrant plugin install vagrant-libvirt
+      ansible.builtin.shell: CONFIGURE_ARGS="with-libvirt-include=/usr/include/libvirt with-libvirt-lib=/usr/lib64" vagrant plugin install vagrant-libvirt
