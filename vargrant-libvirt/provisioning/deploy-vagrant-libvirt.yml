@@ -2,7 +2,7 @@
 - hosts: all
   vars:
     vagrant:
-      version: 2.2.10
+      version: 2.2.19
 
   tasks:
     - name: Install base requirements
