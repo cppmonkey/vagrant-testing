@@ -7,28 +7,26 @@
   tasks:
     - name: Install base requirements
       ansible.builtin.package:
-        name: "{{ item }}"
+        name:
+          - epel-release
+          - git
+          - vim
+          - wget
+          - python3
         state: present
-      loop:
-        - epel-release
-        - git
-        - vim
-        - wget
-        - python3
       become: True
 
     - name: Install KVM Hypervisor
       ansible.builtin.package:
-        name: "{{ item }}"
+        name:
+          - libvirt
+          - qemu
+          - qemu-kvm
+          - virt-install
+          - virt-top
+          - libguestfs-tools
+          - bridge-utils
         state: present
-      loop:
-        - libvirt
-        - qemu
-        - qemu-kvm
-        - virt-install
-        - virt-top
-        - libguestfs-tools
-        - bridge-utils
       become: True
       ignore_errors: yes
 
@@ -50,25 +48,22 @@
 
     - name: Install Vagrant Dependencies
       ansible.builtin.package:
-        name: "{{ item }}"
+        name:
+          - make
+          - rsync
+          - gcc
+          - zlib-devel
+          - libvirt-devel
         state: present
-      loop:
-        - make
-        - rsync
-        - gcc
-        - zlib-devel
-        - libvirt-devel
       become: True
       ignore_errors: yes
 
     - name: Install Ruby
       ansible.builtin.package:
         name:
-        name: "{{ item }}"
+          - ruby
+          - ruby-devel
         state: present
-      loop:
-        - ruby
-        - ruby-devel
       become: True
       ignore_errors: yes
 
@@ -80,10 +75,8 @@
 
     - name: Install Vagrant
       ansible.builtin.dnf:
-        name: "{{ item }}"
+        name: "/tmp/vagrant_{{ vagrant.version }}_x86_64.rpm"
         state: present
-      loop:
-        - "/tmp/vagrant_{{ vagrant.version }}_x86_64.rpm"
       become: True
       ignore_errors: yes
 
