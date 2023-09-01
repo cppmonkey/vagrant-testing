@@ -1,11 +1,11 @@
 ---
 - name: Install base requirements
-  package:
+  ansible.builtin.package:
     name: gnupg2 #required to add keys!
     state: present
 
 - name: Install base requirements
-  package:
+  ansible.builtin.package:
     name: "{{ item }}"
     state: present
   loop:

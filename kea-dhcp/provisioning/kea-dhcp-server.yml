@@ -2,7 +2,7 @@
 - hosts: all
   tasks:
     - name: Install base requirements
-      package:
+      ansible.builtin.package:
         name: "{{ item }}"
         state: present
       loop:
@@ -13,13 +13,13 @@
       become: True
 
     - name: Get Kea DHCP Source
-      git:
+      ansible.builtin.git:
         repo: https://gitlab.isc.org/isc-projects/kea.git
         dest: ~/kea
         version: Kea-1.8.0
 
     - name: Install component dependencies
-      shell:
+      ansible.builtin.shell:
         chdir: ~/kea
         cmd: "./hammer.py prepare-system -p local -w {{ item }}"
       loop:
@@ -29,34 +29,34 @@
         - shell
 
     - name: Extract Premium hooks for Kea DHCP
-      unarchive:
+      ansible.builtin.unarchive:
         remote_src: yes
         src: ~/kea-premium-1.8.0.tar
         dest: ~/kea/
 
     - name: Autoreconf files for Kea DHCP
-      shell:
+      ansible.builtin.shell:
         chdir: ~/kea
         cmd: autoreconf -if
 
     - name: configure make files for Kea DHCP
-      shell:
+      ansible.builtin.shell:
         chdir: ~/kea
         cmd: ./configure --with-mysql --with-pgsql --enable-shell
 
     - name: kea dhcp - make
-      shell:
+      ansible.builtin.shell:
         chdir: ~/kea
         cmd: make -j16
 
     - name: kea dhcp - make install
-      shell:
+      ansible.builtin.shell:
         chdir: /home/vagrant/kea
         cmd: make install
       become: True
 
     - name: kea dhcp - create ldconfig file
-      lineinfile:
+      ansible.builtin.lineinfile:
         path: /etc/ld.so.conf.d/kea.conf
         regexp: hooks
         line: /opt/kea/lib/hooks
