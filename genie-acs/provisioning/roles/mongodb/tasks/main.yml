@@ -7,7 +7,7 @@
 
 - name: Added MongoDB Repo - Debian
   ansible.builtin.apt_repository:
-    repo: "deb http://repo.mongodb.org/apt/{{ ansible_distribution | lower }} {{ ansible_distribution_release }}/mongodb-org/{{ mongodb.version }} multiverse"
+    repo: "deb [ signed-by=/usr/share/keyrings/mongodb-server-{{ mongodb.version }}.gpg ] http://repo.mongodb.org/apt/{{ ansible_distribution | lower }} {{ ansible_distribution_release }}/mongodb-org/{{ mongodb.version }} main"
     state: present
     filename: mongodb
   when: ansible_facts['os_family'] == 'Debian'
