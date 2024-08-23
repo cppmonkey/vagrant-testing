@@ -6,10 +6,9 @@
 
 - name: Install base requirements
   ansible.builtin.package:
-    name: "{{ item }}"
+    name:
+      - git
+      - vim
+      - wget
+      - python3
     state: present
-  loop:
-    - git
-    - vim
-    - wget
-    - python3
