@@ -1,0 +1,61 @@
+---
+- hosts: all
+  tasks:
+
+    - name: Update base packages
+      ansible.builtin.package:
+        name: "*"
+        state: latest
+      become: True
+
+    - name: Install base requirements
+      ansible.builtin.package:
+        name:
+          - git
+          - make
+          - libxml2-dev
+          - perl
+          - libcap-dev
+          - libtool
+          - libnghttp2-dev
+          - libuv1-dev
+          - libssl-dev
+          - liburcu-dev
+          - libjemalloc-dev
+          - zlib1g-dev
+          - libmaxminddb-dev
+          - libidn2-dev
+          - libedit-dev
+          - python3-pytest
+        state: present
+      become: True
+
+    - name: Get ISC BIND9 Source
+      ansible.builtin.git:
+        repo: https://gitlab.isc.org/isc-projects/bind9.git
+        dest: ~/bind9
+        depth: 1
+        force: true
+        single_branch: true
+        version: stable
+
+    - name: Autoreconf files for ISC BIND9
+      ansible.builtin.shell:
+        chdir: ~/bind9
+        cmd: autoreconf -if
+
+    - name: configure make files for ISC BIND9
+      ansible.builtin.shell:
+        chdir: ~/bind9
+        cmd: ./configure --prefix="" --sysconfdir=/etc/bind --localstatedir=/var --disable-static --with-openssl --with-libxml2
+
+    - name: ISC BIND9 - make
+      ansible.builtin.shell:
+        chdir: ~/bind9
+        cmd: make
+
+    - name: ISC BIND9 - make install
+      ansible.builtin.shell:
+        chdir: /home/vagrant/bind9
+        cmd: make install
+      become: True
