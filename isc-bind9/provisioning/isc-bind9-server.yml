@@ -1,6 +1,12 @@
 ---
 - hosts: all
   tasks:
+    - name: apt update
+      ansible.builtin.apt:
+        update_cache: yes
+      become: True
+      when: ansible_distribution == "Ubuntu"
+
 
     - name: Update base packages
       ansible.builtin.package:
