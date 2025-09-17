@@ -46,21 +46,27 @@
       ansible.builtin.package:
         name:
           - git
-          - make
-          - libxml2-dev
-          - perl
           - libcap-dev
-          - libtool
-          - libnghttp2-dev
-          - libuv1-dev
-          - libssl-dev
-          - liburcu-dev
-          - libjemalloc-dev
-          - zlib1g-dev
-          - libmaxminddb-dev
-          - libidn2-dev
           - libedit-dev
+          - libfstrm-dev
+          - libidn2-dev
+          - libjemalloc-dev
+          - libjson-c-dev
+          - libkrb5-dev
+          - liblmdb-dev
+          - libmaxminddb-dev
+          - libnghttp2-dev
+          - libprotobuf-c-dev
+          - libssl-dev
+          - libtool
+          - liburcu-dev
+          - libuv1-dev
+          - libxml2-dev
+          - make
+          - perl
+          - protobuf-c-compiler
           - python3-pytest
+          - zlib1g-dev
         state: present
       become: True
 
