@@ -81,7 +81,48 @@
     - name: configure make files for ISC BIND9
       ansible.builtin.shell:
         chdir: ~/bind9
-        cmd: ./configure --prefix="" --sysconfdir=/etc/bind --localstatedir=/var --disable-static --with-openssl --with-libxml2
+        cmd: "./configure {{ make_cfg_opts | join(' ') }}"
+      vars:
+        make_cfg_opts:
+          - --build=x86_64-linux-gnu
+          - --prefix=/usr
+          - --includedir=\$\{prefix\}/include
+          - --mandir=\$\{prefix\}/share/man
+          - --infodir=\$\{prefix\}/share/info
+          - --sysconfdir=/etc
+          - --localstatedir=/var
+          - --disable-silent-rules
+          - --libdir=\$\{prefix\}/lib/x86_64-linux-gnu
+          - --libexecdir=\$\{prefix\}/lib/x86_64-linux-gnu
+          - --disable-maintainer-mode
+          - --disable-dependency-tracking
+          - --libdir=/usr/lib/x86_64-linux-gnu
+          - --sysconfdir=/etc/bind
+          - --with-python=python3
+          - --localstatedir=/
+          - --enable-threads
+          - --enable-largefile
+          - --with-libtool
+          - --enable-shared
+          - --disable-static
+          - --with-gost=no
+          - --with-openssl=/usr
+          - --with-gssapi=yes
+          - --with-libidn2
+          - --with-json-c
+          - --with-lmdb=/usr
+          - --with-gnu-ld
+          - --with-maxminddb
+          - --with-atf=no
+          - --enable-ipv6
+          - --enable-rrl
+          - --enable-filter-aaaa
+          - --disable-native-pkcs11
+          - --enable-dnstap
+          - build_alias=x86_64-linux-gnu
+          - CFLAGS="-g -O2 -fdebug-prefix-map=/build/bind9-fzLItU/bind9-9.20.9=. -fstack-protector-strong -Wformat -Werror=format-security -fno-strict-aliasing -fno-delete-null-pointer-checks -DNO_VERSION_DATE -DDIG_SIGCHASE"
+          - LDFLAGS="-Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-z,now"
+          - CPPFLAGS="-Wdate-time -D_FORTIFY_SOURCE=2"
 
     - name: ISC BIND9 - make
       ansible.builtin.shell:
