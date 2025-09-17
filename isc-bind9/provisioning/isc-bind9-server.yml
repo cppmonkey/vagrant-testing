@@ -7,6 +7,34 @@
       become: True
       when: ansible_distribution == "Ubuntu"
 
+    # Due to the box being used, there is an old kernel present
+    - name: apt remove old kernel version
+      ansible.builtin.apt:
+        name:
+          - linux-cloud-tools-5.4.0-42-generic
+          - linux-image-5.4.0-42-generic
+          - linux-tools-5.4.0-42-generic
+        state: absent
+      become: True
+      when: ansible_distribution == "Ubuntu"
+
+    # Remove init for old kernel present
+    - name: remove unused initrd.img files
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - /boot/initrd.img-5.4.0-42-generic.img
+        - /boot/initrd.img-5.4.0-169-generic.img
+      become: True
+      when: ansible_distribution == "Ubuntu"
+
+    - name: apt autoremove
+      ansible.builtin.apt:
+        autoremove: yes
+        purge: true
+      become: True
+      when: ansible_distribution == "Ubuntu"
 
     - name: Update base packages
       ansible.builtin.package:
