@@ -7,7 +7,7 @@ ENV['VAGRANT_DEFAULT_PROVIDER'] = 'libvirt'
 Vagrant.configure("2") do |config|
 
   ##### DEFINE VM #####
-  config.vm.define "dns01" do |config|
+  config.vm.define "dns01"
   config.vm.hostname = "dns01"
   config.vm.box = "generic/ubuntu2004"
   config.vm.box_check_update = false
@@ -15,10 +15,9 @@ Vagrant.configure("2") do |config|
     v.cpus = 4
     v.keymap = 'en-gb'
     v.memory = 2048
-    v.machine_virtual_size = 8
   end
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "provisioning/isc-bind9-server.yml"
-    end
+    ansible.compatibility_mode = "2.0"
   end
 end
