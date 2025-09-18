@@ -48,14 +48,17 @@
           - git
           - libcap-dev
           - libedit-dev
+          - libfstrm0
           - libfstrm-dev
           - libidn2-dev
+          - libjemalloc2
           - libjemalloc-dev
           - libjson-c-dev
           - libkrb5-dev
           - liblmdb-dev
           - libmaxminddb-dev
           - libnghttp2-dev
+          - libprotobuf-c1
           - libprotobuf-c-dev
           - libssl-dev
           - libtool
@@ -140,3 +143,37 @@
         chdir: /home/vagrant/bind9
         cmd: make install
       become: True
+
+    - name: remove build packages
+      ansible.builtin.package:
+        name:
+          - libcap-dev
+          - libedit-dev
+          - libfstrm-dev
+          - libidn2-dev
+          - libjemalloc-dev
+          - libjson-c-dev
+          - libkrb5-dev
+          - liblmdb-dev
+          - libmaxminddb-dev
+          - libnghttp2-dev
+          - libprotobuf-c-dev
+          - libssl-dev
+          - libtool
+          - liburcu-dev
+          - libuv1-dev
+          - libxml2-dev
+          - make
+          - perl
+          - protobuf-c-compiler
+          - python3-pytest
+          - zlib1g-dev
+        state: absent
+      become: True
+
+    - name: Post build - apt autoremove
+      ansible.builtin.apt:
+        autoremove: yes
+        purge: true
+      become: True
+      when: ansible_distribution == "Ubuntu"
