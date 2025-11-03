@@ -1,0 +1,91 @@
+---
+- hosts: all
+  vars:
+    src_dir: "/home/{{ ansible_user }}/git/github.com/python/cpython"
+    python_tag: v3.9.24
+
+  tasks:
+    - name: patch repo
+      ansible.builtin.shell: sed -i -e '/^mirrorlist/d;/^#baseurl=/{s,^#,,;s,/mirror,/vault,;}' /etc/yum.repos.d/CentOS*.repo
+      become: true
+
+    - name: update packages
+      ansible.builtin.yum:
+        name: "*"
+        state: latest
+      become: true
+
+    - name: ensure required packages are installed
+      ansible.builtin.package:
+        name:
+          - bzip2-devel
+          - expat
+          - expat-devel
+          - gcc
+          - gcc-c++
+          - gdb
+          - gdbm-libs
+          - git
+          - glibc-devel
+          - libffi-devel
+          - libstdc++-devel
+          - libuuid-devel
+          - libzstd-devel
+          - lzma
+          - make
+          - mpdecimal
+          - openssl-devel
+          - openssl-devel 
+          - perf
+          - python3-pip
+          - readline-devel
+          - sqlite
+          - sqlite-devel
+          - sqlite-libs
+          - xz-devel
+          - zlib-devels
+        state: present
+      become: true
+
+    - name: ensure destination folder exists
+      ansible.builtin.file:
+        path: "{{ src_dir }}"
+        state: directory
+
+    - name: "clone Python {{ python_tag }}"
+      ansible.builtin.git:
+        repo: https://github.com/python/cpython.git
+        dest: "{{ src_dir }}"
+        version: "{{ python_tag }}"
+        # to save space and time
+        depth: 1
+        single_branch: true
+
+    - name: configure make for Python3
+      ansible.builtin.command:
+        chdir: "{{ src_dir }}"
+        cmd: ./configure
+        creates: "{{ src_dir }}/Makefile"
+      register: output
+
+    - name: show result of ./configure
+      ansible.builtin.debug:
+        verbosity: 2
+        var: output
+
+    - name: enable optimisations
+      ansible.builtin.command:
+        chdir: "{{ src_dir }}"
+        cmd: ./configure --enable-optimizations
+      register: output
+
+    - name: show reults of ./configure --enable-optimizations
+      ansible.builtin.debug:
+        verbosity: 2
+        var: output
+
+    - name: make altinstall (as root)
+      community.general.make:
+        chdir: "{{ src_dir }}"
+        target: altinstall
+      become: true
